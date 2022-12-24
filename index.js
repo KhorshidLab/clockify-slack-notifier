@@ -15,15 +15,15 @@ const app = express()
 const PORT = 3000
 app.use(bodyParser.json())
 
-app.post('clockify/timer/new', async (req, res) => {
+app.post('/clockify/timer/new', async (req, res) => {
   const clockifySignature = req.header('clockify-signature')
   if (clockifySignature === process.env.CLOCKIFY_TIME_ANY_CREATED_SECRET) {
     console.log('New Time Entry from Clockify!')
     console.log(req.body)
-    const { name } = req.body
+    const { user } = req.body
     res.status(200).end()
 
-    await sendMessageToSlackChannel(`:clap: A new time has been created with name *${name}*!`)
+    await sendMessageToSlackChannel(`:clap: A new time has been created with name *${user.name}*!`)
   } else {
     console.log('Unauthorized')
     res.status(401).json({message: 'Unauthorized'}).end()
