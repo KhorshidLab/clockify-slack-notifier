@@ -60,7 +60,7 @@ app.post('/clockify/clients/new', async (req, res) => {
   }
 })
 
-app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`))
+app.listen(PORT, '127.0.0.1', () => console.log(`🚀 Server running on port ${PORT}`))
 
 async function sendMessageToSlackChannel(text) {
   try {
