@@ -22,7 +22,7 @@ app.post('/clockify/timer/start', async (req, res) => {
   if (clockifySignature === process.env.CLOCKIFY_TIME_ANY_CREATED_SECRET) {
     console.log('New Time Entry from Clockify!')
     console.log(req.body)
-    const { user, project, timeInterval } = req.body
+    const { user, project, description, timeInterval } = req.body
 
     const time = moment.tz(timeInterval.start, process.env.TIMEZONE)
     const start_time = time.format('YYYY/MM/DD hh:mm:ss A')
@@ -41,7 +41,7 @@ app.post('/clockify/timer/stop', async (req, res) => {
   if (clockifySignature === process.env.CLOCKIFY_TIME_ANY_STOP_SECRET) {
     console.log('A Time Entry Stoped!')
     console.log(req.body)
-    const { user, project, timeInterval } = req.body
+    const { user, project, description, timeInterval } = req.body
 
     const starttime = moment.tz(timeInterval.start, process.env.TIMEZONE)
     const endtime = moment.tz(timeInterval.end, process.env.TIMEZONE)
