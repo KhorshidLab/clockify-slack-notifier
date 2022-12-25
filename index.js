@@ -61,7 +61,7 @@ app.post('/clockify/timer/stop', async (req, res) => {
 
 app.post('/clockify/timer/manually-created', async (req, res) => {
   const clockifySignature = req.header('clockify-signature')
-  if (clockifySignature === process.env.CLOCKIFY_TIME_ANY_CREATED_SECRET) {
+  if (clockifySignature === process.env.CLOCKIFY_TIME_ANY_CREATED_MANUALLY_SECRET) {
     console.log('A Time Entry Manually Created!')
     console.log(req.body)
 
