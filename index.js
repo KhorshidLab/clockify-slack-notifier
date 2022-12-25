@@ -3,8 +3,6 @@ const bodyParser = require('body-parser')
 const express = require('express')
 const moment = require('moment-timezone')
 
-moment().tz(process.env.TIMEZONE).format()
-
 require('dotenv').config()
 
 if (!process.env.CLOCKIFY_PROJECT_CREATED_SECRET && !process.env.CLOCKIFY_CLIENT_CREATED_SECRET && !CLOCKIFY_TIME_ANY_CREATED_SECRET) {
@@ -24,10 +22,14 @@ app.post('/clockify/timer/new', async (req, res) => {
   if (clockifySignature === process.env.CLOCKIFY_TIME_ANY_CREATED_SECRET) {
     console.log('New Time Entry from Clockify!')
     console.log(req.body)
-    const { user } = req.body
+    const { user, project, timeInterval } = req.body
+
+    const time = moment.tz(timeInterval.start, process.env.TIMEZONE)
+    const start_time = time.format('YYYY/MM/DD hh:mm A')
+
     res.status(200).end()
 
-    await sendMessageToSlackChannel(`:arrow_forward: *${user.name}* started timer for *${project?.name}* at *${timeInterval.start}*`)
+    await sendMessageToSlackChannel(`:arrow_forward: *${user.name}* started timer for *${project?.name}* at *${start_time}*`)
   } else {
     console.log('Unauthorized')
     res.status(401).json({message: 'Unauthorized'}).end()
