@@ -1,6 +1,10 @@
 const axios = require('axios')
 const bodyParser = require('body-parser')
 const express = require('express')
+const moment = require('moment-timezone')
+
+moment().tz(process.env.TIMEZONE).format()
+
 require('dotenv').config()
 
 if (!process.env.CLOCKIFY_PROJECT_CREATED_SECRET && !process.env.CLOCKIFY_CLIENT_CREATED_SECRET && !CLOCKIFY_TIME_ANY_CREATED_SECRET) {
@@ -23,7 +27,7 @@ app.post('/clockify/timer/new', async (req, res) => {
     const { user } = req.body
     res.status(200).end()
 
-    await sendMessageToSlackChannel(`:clap: A new time has been created with name *${user.name}*!`)
+    await sendMessageToSlackChannel(`:arrow_forward: *${user.name}* started timer for *${project?.name}* at *${timeInterval.start}*`)
   } else {
     console.log('Unauthorized')
     res.status(401).json({message: 'Unauthorized'}).end()
