@@ -36,6 +36,27 @@ app.post('/clockify/timer/start', async (req, res) => {
   }
 })
 
+app.post('/clockify/timer/stop', async (req, res) => {
+  const clockifySignature = req.header('clockify-signature')
+  if (clockifySignature === process.env.CLOCKIFY_TIME_ANY_STOP_SECRET) {
+    console.log('A Time Entry Stoped!')
+    console.log(req.body)
+    const { user, project, timeInterval } = req.body
+
+    const starttime = moment.tz(timeInterval.start, process.env.TIMEZONE)
+    const endtime = moment.tz(timeInterval.end, process.env.TIMEZONE)
+    const start_time = time.format('YYYY/MM/DD hh:mm A')
+    const stop_time = endtime.format('YYYY/MM/DD hh:mm A')
+
+    res.status(200).end()
+
+    await sendMessageToSlackChannel(`:black_square_for_stop: *${user.name}* started timer for *${project?.name}* at *${start_time}*`)
+  } else {
+    console.log('Unauthorized')
+    res.status(401).json({message: 'Unauthorized'}).end()
+  }
+})
+
 app.post('clockify/projects/new', async (req, res) => {
   const clockifySignature = req.header('clockify-signature')
   if (clockifySignature === process.env.CLOCKIFY_PROJECT_CREATED_SECRET) {
