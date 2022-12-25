@@ -73,6 +73,20 @@ app.post('/clockify/timer/manually-created', async (req, res) => {
   }
 })
 
+app.post('/clockify/timer/manually-updated', async (req, res) => {
+  const clockifySignature = req.header('clockify-signature')
+  if (clockifySignature === process.env.CLOCKIFY_TIME_ANY_UPDATED_SECRET) {
+    console.log('A Time Entry Manually Updated!')
+    console.log(req.body)
+
+    res.status(200).end()
+
+  } else {
+    console.log('Unauthorized')
+    res.status(401).json({message: 'Unauthorized'}).end()
+  }
+})
+
 app.post('clockify/projects/new', async (req, res) => {
   const clockifySignature = req.header('clockify-signature')
   if (clockifySignature === process.env.CLOCKIFY_PROJECT_CREATED_SECRET) {
