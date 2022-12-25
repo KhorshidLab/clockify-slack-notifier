@@ -25,7 +25,7 @@ app.post('/clockify/timer/start', async (req, res) => {
     const { user, project, timeInterval } = req.body
 
     const time = moment.tz(timeInterval.start, process.env.TIMEZONE)
-    const start_time = time.format('YYYY/MM/DD hh:mm A')
+    const start_time = time.format('YYYY/MM/DD hh:mm:ss A')
 
     res.status(200).end()
 
@@ -45,8 +45,8 @@ app.post('/clockify/timer/stop', async (req, res) => {
 
     const starttime = moment.tz(timeInterval.start, process.env.TIMEZONE)
     const endtime = moment.tz(timeInterval.end, process.env.TIMEZONE)
-    const start_time = starttime.format('YYYY/MM/DD hh:mm A')
-    const stop_time = endtime.format('YYYY/MM/DD hh:mm A')
+    const start_time = starttime.format('YYYY/MM/DD hh:mm:ss A')
+    const stop_time = endtime.format('YYYY/MM/DD hh:mm:ss A')
 
     res.status(200).end()
 
