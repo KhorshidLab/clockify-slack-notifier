@@ -17,7 +17,7 @@ const app = express()
 const PORT = 3000
 app.use(bodyParser.json())
 
-app.post('/clockify/timer/new', async (req, res) => {
+app.post('/clockify/timer/start', async (req, res) => {
   const clockifySignature = req.header('clockify-signature')
   if (clockifySignature === process.env.CLOCKIFY_TIME_ANY_CREATED_SECRET) {
     console.log('New Time Entry from Clockify!')
