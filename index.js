@@ -64,9 +64,18 @@ app.post('/clockify/timer/manually-created', async (req, res) => {
   if (clockifySignature === process.env.CLOCKIFY_TIME_ANY_CREATED_MANUALLY_SECRET) {
     console.log('A Time Entry Manually Created!')
     console.log(req.body)
+    const { user, project, description, timeInterval } = req.body
+
+    const starttime = moment.tz(timeInterval.start, process.env.TIMEZONE)
+    const endtime = moment.tz(timeInterval.end, process.env.TIMEZONE)
+    const start_time = starttime.format('YYYY/MM/DD hh:mm:ss A')
+    const stop_time = endtime.format('YYYY/MM/DD hh:mm:ss A')
+
+    const duration = moment.duration(timeInterval.duration);
 
     res.status(200).end()
 
+    await sendMessageToSlackChannel(`> :large_green_square:  Timer Manually Added \n> *User:* \`${user.name}\` add a time entry for \`${project?.name}\` at *${stop_time}* \n> *Description:* ${description}                    *Duration:* \`${duration.humanize()}\` `)
   } else {
     console.log('Unauthorized')
     res.status(401).json({message: 'Unauthorized'}).end()
