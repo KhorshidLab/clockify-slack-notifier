@@ -29,7 +29,7 @@ app.post('/clockify/timer/start', async (req, res) => {
 
     res.status(200).end()
 
-    await sendMessageToSlackChannel(`:arrow_forward: *${user.name}* started timer for *${project?.name}* at *${start_time}* \n       Description: *${description}* `)
+    await sendMessageToSlackChannel(`> :arrow_forward:  Timer Startd \n> *User:* \`${user.name}\` started timer for \`${project?.name}\` at *${stop_time}* \n> *Description:* ${description} `)
   } else {
     console.log('Unauthorized')
     res.status(401).json({message: 'Unauthorized'}).end()
