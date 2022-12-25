@@ -29,7 +29,7 @@ app.post('/clockify/timer/start', async (req, res) => {
 
     res.status(200).end()
 
-    await sendMessageToSlackChannel(`:arrow_forward: *${user.name}* started timer for *${project?.name}* at *${start_time}* \n      Description: *${description}* `)
+    await sendMessageToSlackChannel(`:arrow_forward: *${user.name}* started timer for *${project?.name}* at *${start_time}* \n       Description: *${description}* `)
   } else {
     console.log('Unauthorized')
     res.status(401).json({message: 'Unauthorized'}).end()
@@ -52,7 +52,21 @@ app.post('/clockify/timer/stop', async (req, res) => {
 
     res.status(200).end()
 
-    await sendMessageToSlackChannel(`:black_square_for_stop: *${user.name}* stoped timer for *${project?.name}* at *${stop_time}* \n      Description: *${description}* \n      Duration: *${duration.humanize()}* `)
+    await sendMessageToSlackChannel(`:black_square_for_stop: *${user.name}* stoped timer for *${project?.name}* at *${stop_time}* \n       Description: *${description}* \n      Duration: *${duration.humanize()}* `)
+  } else {
+    console.log('Unauthorized')
+    res.status(401).json({message: 'Unauthorized'}).end()
+  }
+})
+
+app.post('/clockify/timer/manually-created', async (req, res) => {
+  const clockifySignature = req.header('clockify-signature')
+  if (clockifySignature === process.env.CLOCKIFY_TIME_ANY_CREATED_SECRET) {
+    console.log('A Time Entry Manually Created!')
+    console.log(req.body)
+
+    res.status(200).end()
+
   } else {
     console.log('Unauthorized')
     res.status(401).json({message: 'Unauthorized'}).end()
