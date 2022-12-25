@@ -87,9 +87,18 @@ app.post('/clockify/timer/manually-updated', async (req, res) => {
   if (clockifySignature === process.env.CLOCKIFY_TIME_ANY_UPDATED_SECRET) {
     console.log('A Time Entry Manually Updated!')
     console.log(req.body)
+    const { user, project, description, timeInterval } = req.body
+
+    const starttime = moment.tz(timeInterval.start, process.env.TIMEZONE)
+    const endtime = moment.tz(timeInterval.end, process.env.TIMEZONE)
+    const start_time = starttime.format('YYYY/MM/DD hh:mm:ss A')
+    const stop_time = endtime.format('YYYY/MM/DD hh:mm:ss A')
+
+    const duration = moment.duration(timeInterval.duration);
 
     res.status(200).end()
 
+    await sendMessageToSlackChannel(`> :large_blue_square:  Time Manually Updated \n> *User:* \`${user.name}\` update a time entry for \`${project?.name}\` at *${stop_time}* \n> *Description:* ${description}                    *Duration:* \`${duration.humanize()}\` `)
   } else {
     console.log('Unauthorized')
     res.status(401).json({message: 'Unauthorized'}).end()
@@ -101,9 +110,18 @@ app.post('/clockify/timer/deleted', async (req, res) => {
   if (clockifySignature === process.env.CLOCKIFY_TIME_ANY_DELETED_SECRET) {
     console.log('A Time Entry Deleted!')
     console.log(req.body)
+    const { user, project, description, timeInterval } = req.body
+
+    const starttime = moment.tz(timeInterval.start, process.env.TIMEZONE)
+    const endtime = moment.tz(timeInterval.end, process.env.TIMEZONE)
+    const start_time = starttime.format('YYYY/MM/DD hh:mm:ss A')
+    const stop_time = endtime.format('YYYY/MM/DD hh:mm:ss A')
+
+    const duration = moment.duration(timeInterval.duration);
 
     res.status(200).end()
 
+    await sendMessageToSlackChannel(`> :large_red_square:  Time Deleted \n> *User:* \`${user.name}\` delete a time entry for \`${project?.name}\` at *${stop_time}* \n> *Description:* ${description}                    *Duration:* \`${duration.humanize()}\` `)
   } else {
     console.log('Unauthorized')
     res.status(401).json({message: 'Unauthorized'}).end()
