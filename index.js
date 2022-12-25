@@ -50,7 +50,7 @@ app.post('/clockify/timer/stop', async (req, res) => {
 
     res.status(200).end()
 
-    await sendMessageToSlackChannel(`:black_square_for_stop: *${user.name}* started timer for *${project?.name}* at *${start_time}*`)
+    await sendMessageToSlackChannel(`:black_square_for_stop: *${user.name}* stoped timer for *${project?.name}* at *${start_time}*`)
   } else {
     console.log('Unauthorized')
     res.status(401).json({message: 'Unauthorized'}).end()
