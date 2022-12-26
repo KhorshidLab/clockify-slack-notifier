@@ -74,10 +74,11 @@ app.post('/clockify/timer/manually-created', async (req, res) => {
 
     const duration = moment.duration(timeInterval.duration);
     const duration_formated =  duration.get('hours') + ':' + duration.get('minutes') + ':' + duration.get('seconds')
+    const current = moment().format('YYYY/MM/DD hh:mm:ss A')
 
     res.status(200).end()
 
-    await sendMessageToSlackChannel(`> :large_green_square:  Timer Manually Added \n> *User:* \`${user.name}\` add a time entry for \`${project?.name}\` at *${stop_time}* \n> *Description:* ${description}                    *Duration:* \`${duration_formated}\` `)
+    await sendMessageToSlackChannel(`> :large_green_square:  Timer Manually Added \n> *User:* \`${user.name}\` add a time entry for \`${project?.name}\` at *${stop_time}* \n> *Description:* ${description}                    *Duration:* \`${duration_formated}\` \n> *Added at:* \`${current}\` `)
   } else {
     console.log('Unauthorized')
     res.status(401).json({message: 'Unauthorized'}).end()
@@ -123,10 +124,11 @@ app.post('/clockify/timer/deleted', async (req, res) => {
 
     const duration = moment.duration(timeInterval.duration)
     const duration_formated =  duration.get('hours') + ':' + duration.get('minutes') + ':' + duration.get('seconds')
-
+    const current = moment().format('YYYY/MM/DD hh:mm:ss A')
+    
     res.status(200).end()
 
-    await sendMessageToSlackChannel(`> :large_red_square:  Time Deleted \n> *User:* \`${user.name}\` delete a time entry for \`${project?.name}\` at *${stop_time}* \n> *Description:* ${description}                    *Duration:* \`${duration_formated}\` `)
+    await sendMessageToSlackChannel(`> :large_red_square:  Time Deleted \n> *User:* \`${user.name}\` delete a time entry for \`${project?.name}\` at *${stop_time}* \n> *Description:* ${description}                    *Duration:* \`${duration_formated}\` \n> *Edited at:* \`${current}\` `)
   } else {
     console.log('Unauthorized')
     res.status(401).json({message: 'Unauthorized'}).end()
