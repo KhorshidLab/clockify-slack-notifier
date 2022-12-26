@@ -48,11 +48,12 @@ app.post('/clockify/timer/stop', async (req, res) => {
     const start_time = starttime.format('YYYY/MM/DD hh:mm:ss A')
     const stop_time = endtime.format('YYYY/MM/DD hh:mm:ss A')
 
-    const duration = moment.duration(timeInterval.duration);
+    const duration = moment.duration(timeInterval.duration)
+    const duration_formated =  duration.get('hours') + ':' + duration.get('minutes') + ':' + duration.get('seconds')
 
     res.status(200).end()
 
-    await sendMessageToSlackChannel(`> :black_square_for_stop:  Timer Stoped \n> *User:* \`${user.name}\` stoped timer for \`${project?.name}\` at *${stop_time}* \n> *Description:* ${description}                    *Duration:* \`${duration.humanize()}\` `)
+    await sendMessageToSlackChannel(`> :black_square_for_stop:  Timer Stoped \n> *User:* \`${user.name}\` stoped timer for \`${project?.name}\` at *${stop_time}* \n> *Description:* ${description}                    *Duration:* \`${duration_formated}\` `)
   } else {
     console.log('Unauthorized')
     res.status(401).json({message: 'Unauthorized'}).end()
@@ -72,10 +73,11 @@ app.post('/clockify/timer/manually-created', async (req, res) => {
     const stop_time = endtime.format('YYYY/MM/DD hh:mm:ss A')
 
     const duration = moment.duration(timeInterval.duration);
+    const duration_formated =  duration.get('hours') + ':' + duration.get('minutes') + ':' + duration.get('seconds')
 
     res.status(200).end()
 
-    await sendMessageToSlackChannel(`> :large_green_square:  Timer Manually Added \n> *User:* \`${user.name}\` add a time entry for \`${project?.name}\` at *${stop_time}* \n> *Description:* ${description}                    *Duration:* \`${duration.humanize()}\` `)
+    await sendMessageToSlackChannel(`> :large_green_square:  Timer Manually Added \n> *User:* \`${user.name}\` add a time entry for \`${project?.name}\` at *${stop_time}* \n> *Description:* ${description}                    *Duration:* \`${duration_formated}\` `)
   } else {
     console.log('Unauthorized')
     res.status(401).json({message: 'Unauthorized'}).end()
@@ -94,12 +96,13 @@ app.post('/clockify/timer/manually-updated', async (req, res) => {
     const start_time = starttime.format('YYYY/MM/DD hh:mm:ss A')
     const stop_time = endtime.format('YYYY/MM/DD hh:mm:ss A')
 
-    const duration = moment.duration(timeInterval.duration);
-    const current = moment().format('YYYY/MM/DD hh:mm:ss A');
+    const duration = moment.duration(timeInterval.duration)
+    const duration_formated =  duration.get('hours') + ':' + duration.get('minutes') + ':' + duration.get('seconds')
+    const current = moment().format('YYYY/MM/DD hh:mm:ss A')
 
     res.status(200).end()
 
-    await sendMessageToSlackChannel(`> :large_blue_square:  Time Manually Updated \n> *User:* \`${user.name}\` update a time entry for \`${project?.name}\` start at *${start_time}*, end at *${stop_time}* \n> *Description:* ${description}                    *Duration:* \`${duration.humanize()}\` \n> *Edited at:* \`${current}\` `)
+    await sendMessageToSlackChannel(`> :large_blue_square:  Time Manually Updated \n> *User:* \`${user.name}\` update a time entry for \`${project?.name}\` start at *${start_time}*, end at *${stop_time}* \n> *Description:* ${description}                    *Duration:* \`${duration_formated}\` \n> *Edited at:* \`${current}\` `)
   } else {
     console.log('Unauthorized')
     res.status(401).json({message: 'Unauthorized'}).end()
@@ -118,11 +121,12 @@ app.post('/clockify/timer/deleted', async (req, res) => {
     const start_time = starttime.format('YYYY/MM/DD hh:mm:ss A')
     const stop_time = endtime.format('YYYY/MM/DD hh:mm:ss A')
 
-    const duration = moment.duration(timeInterval.duration);
+    const duration = moment.duration(timeInterval.duration)
+    const duration_formated =  duration.get('hours') + ':' + duration.get('minutes') + ':' + duration.get('seconds')
 
     res.status(200).end()
 
-    await sendMessageToSlackChannel(`> :large_red_square:  Time Deleted \n> *User:* \`${user.name}\` delete a time entry for \`${project?.name}\` at *${stop_time}* \n> *Description:* ${description}                    *Duration:* \`${duration.humanize()}\` `)
+    await sendMessageToSlackChannel(`> :large_red_square:  Time Deleted \n> *User:* \`${user.name}\` delete a time entry for \`${project?.name}\` at *${stop_time}* \n> *Description:* ${description}                    *Duration:* \`${duration_formated}\` `)
   } else {
     console.log('Unauthorized')
     res.status(401).json({message: 'Unauthorized'}).end()
