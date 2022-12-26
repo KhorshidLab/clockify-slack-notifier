@@ -95,10 +95,11 @@ app.post('/clockify/timer/manually-updated', async (req, res) => {
     const stop_time = endtime.format('YYYY/MM/DD hh:mm:ss A')
 
     const duration = moment.duration(timeInterval.duration);
+    const current = moment().format('YYYY/MM/DD hh:mm:ss A');
 
     res.status(200).end()
 
-    await sendMessageToSlackChannel(`> :large_blue_square:  Time Manually Updated \n> *User:* \`${user.name}\` update a time entry for \`${project?.name}\` at *${stop_time}* \n> *Description:* ${description}                    *Duration:* \`${duration.humanize()}\` `)
+    await sendMessageToSlackChannel(`> :large_blue_square:  Time Manually Updated \n> *User:* \`${user.name}\` update a time entry for \`${project?.name}\` start at *${start_time}*, end at *${stop_time}* \n> *Description:* ${description}                    *Duration:* \`${duration.humanize()}\` \n> *Edited at:* \`${current}\` `)
   } else {
     console.log('Unauthorized')
     res.status(401).json({message: 'Unauthorized'}).end()
