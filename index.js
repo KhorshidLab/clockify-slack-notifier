@@ -53,7 +53,7 @@ app.post('/clockify/timer/stop', async (req, res) => {
 
     res.status(200).end()
 
-    await sendMessageToSlackChannel(`> :black_square_for_stop:  Timer Stoped \n> *User:* \`${user.name}\` stoped timer for \`${project?.name}\` at *${stop_time}* \n> *Description:* ${description}                    *Duration:* \`${duration_formated}\` `)
+    await sendMessageToSlackChannel(`> :black_square_for_stop:  Timer Stoped \n> *User:* \`${user.name}\` stoped timer for \`${project?.name}\` start at *${start_time}*, end at *${stop_time}* \n> *Description:* ${description}                    *Duration:* \`${duration_formated}\` `)
   } else {
     console.log('Unauthorized')
     res.status(401).json({message: 'Unauthorized'}).end()
@@ -78,7 +78,7 @@ app.post('/clockify/timer/manually-created', async (req, res) => {
 
     res.status(200).end()
 
-    await sendMessageToSlackChannel(`> :large_green_square:  Timer Manually Added \n> *User:* \`${user.name}\` add a time entry for \`${project?.name}\` at *${stop_time}* \n> *Description:* ${description}                    *Duration:* \`${duration_formated}\` \n> *Added at:* \`${current}\` `)
+    await sendMessageToSlackChannel(`> :large_green_square:  Timer Manually Added \n> *User:* \`${user.name}\` add a time entry for \`${project?.name}\` start at *${start_time}*, end at *${stop_time}* \n> *Description:* ${description}                    *Duration:* \`${duration_formated}\` \n> *Added at:* \`${current}\` `)
   } else {
     console.log('Unauthorized')
     res.status(401).json({message: 'Unauthorized'}).end()
@@ -128,7 +128,7 @@ app.post('/clockify/timer/deleted', async (req, res) => {
     
     res.status(200).end()
 
-    await sendMessageToSlackChannel(`> :large_red_square:  Time Deleted \n> *User:* \`${user.name}\` delete a time entry for \`${project?.name}\` at *${stop_time}* \n> *Description:* ${description}                    *Duration:* \`${duration_formated}\` \n> *Edited at:* \`${current}\` `)
+    await sendMessageToSlackChannel(`> :large_red_square:  Time Deleted \n> *User:* \`${user.name}\` delete a time entry for \`${project?.name}\` start at *${start_time}*, end at *${stop_time}* \n> *Description:* ${description}                    *Duration:* \`${duration_formated}\` \n> *Edited at:* \`${current}\` `)
   } else {
     console.log('Unauthorized')
     res.status(401).json({message: 'Unauthorized'}).end()
